@@ -1,2 +1,3 @@
-# weather-app
-weather-app from Andre Meads NodeJS Udemy Course 
+# weather-app ⛅️ ☀️ ☂️
+
+weather-app from Andre Meads NodeJS Udemy Course
