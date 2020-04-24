@@ -1,10 +1,29 @@
 const request = require('request')
 const dotenv = require('dotenv')
 
-// reading from .env file
-dotenv.config()
-const url = process.env.URL
+// using config.js
+const {
+  weather_endpoint,
+  weather_key,
+  geo_endpoint,
+  geo_key,
+} = require('./config')
+
+const weather_querry = '&query=Berlin&units=m'
+
+const url =
+  weather_endpoint + 'current?access_key=' + weather_key + weather_querry
 
 request({ url: url, json: true }, (error, response) => {
-  console.log(response.body.current)
+  var t = response.body.current.temperature
+  var f = response.body.current.feelslike
+  var forecast = response.body.current.weather_descriptions[0]
+  console.log(
+    'It is',
+    forecast + '. The current temperature is',
+    t,
+    'degrees. But it feels like',
+    f,
+    'degrees.'
+  )
 })
