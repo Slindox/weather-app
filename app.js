@@ -10,11 +10,15 @@ const {
 } = require('./config')
 
 const weather_querry = '&query=Berlin&units=m'
+const weather_url = `${weather_endpoint}current?access_key=${weather_key}${weather_querry}`
+const geo_querry = '-122.463%2C%2037.7648.json'
+const geo_url = `${geo_endpoint}${geo_querry}?access_token=${geo_key}`
 
-const url =
-  weather_endpoint + 'current?access_key=' + weather_key + weather_querry
+request({ url: geo_url, json: true }, (error, response) => {
+  console.log(response)
+})
 
-request({ url: url, json: true }, (error, response) => {
+request({ url: weather_url, json: true }, (error, response) => {
   var t = response.body.current.temperature
   var f = response.body.current.feelslike
   var forecast = response.body.current.weather_descriptions[0]
