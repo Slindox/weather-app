@@ -11,23 +11,36 @@ const {
 
 const weather_querry = '&query=Berlin&units=m'
 const weather_url = `${weather_endpoint}current?access_key=${weather_key}${weather_querry}`
-const geo_querry = '-122.463%2C%2037.7648.json'
-const geo_url = `${geo_endpoint}${geo_querry}?access_token=${geo_key}`
-
+const geo_search = 'Bodega%20Bay'
+const geo_parameters = 'limit=1&'
+const geo_url = `${geo_endpoint}${geo_search}.json?${geo_parameters}access_token=${geo_key}`
 request({ url: geo_url, json: true }, (error, response) => {
-  console.log(response)
+  if (error) {
+    console.log('Unable to connect to Geo services.')
+  } else if (response.body.features.length === 0) {
+    console.log('Unable to find location. Try another search')
+  } else {
+    const latitude = response.body.features[0].center[1]
+    const longitude = response.body.features[0].center[0]
+    console.log('Latitude:  ' + latitude)
+    console.log('Longitude: ' + longitude)
+  }
 })
 
-request({ url: weather_url, json: true }, (error, response) => {
-  var t = response.body.current.temperature
-  var f = response.body.current.feelslike
-  var forecast = response.body.current.weather_descriptions[0]
-  console.log(
-    'It is',
-    forecast + '. The current temperature is',
-    t,
-    'degrees. But it feels like',
-    f,
-    'degrees.'
-  )
-})
+// request({ url: weather_url, json: true }, (error, response) => {
+//   if (error) {
+//     console.log('Unable to connect to weather service')
+//   } else if (response.body.error) {
+//     console.log('Unable to find location')
+//   } else {
+//     console.log(
+//       'It is',
+//       response.body.current.weather_descriptions[0] +
+//         '. The current temperature is',
+//       response.body.current.temperature,
+//       'degrees. But it feels like',
+//       response.body.current.feelslike,
+//       'degrees.'
+//     )
+//   }
+// })
